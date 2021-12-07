@@ -1,16 +1,24 @@
-# This is a sample Python script.
+from flask import Flask, render_template, request
+import webbrowser
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = Flask(__name__)
+address = "http://127.0.0.1:5000/"
 
+webbrowser.open(address)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+@app.route('/', methods=['GET', 'POST'])
+def primeiro():
+    return render_template('index.html')
 
+@app.route('/feed', methods=['GET', 'POST'])
+def segundo():
+    return render_template('resposta.html', username=request.form['username'], password=request.form['password'])
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+@app.route('/shutdown', methods=['GET', 'POST'])
+def terceiro():
+    webbrowser.open("https://google.com")
+    request.environ.get('werkzeug.server.shutdown')
+    return 'Duckgram has too many ducks, try Google...'
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    app.run()
